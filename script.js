@@ -1,3 +1,6 @@
+// Variabele voor actieve tijd
+let actieveTijd = null; // Herinnert welke tijd geselecteerd is
+
 const afbeeldingenSets = {
     ochtend: ["images/ochtend.png", "images/ochtend1.jpg", "images/ochtend2.jpg"],
     middag: ["images/middag.png", "images/middag1.jpg", "images/middag2.jpeg"],
@@ -5,14 +8,14 @@ const afbeeldingenSets = {
 };
 
 function veranderAchtergrond(tijd) {
-    const afbeeldingen = afbeeldingenSets[tijd];
-    const randomIndex = Math.floor(Math.random() * afbeeldingen.length);
-    document.body.style.backgroundImage = `url(${afbeeldingen[randomIndex]})`;
+    actieveTijd = tijd; // Onthoud welke tijd actief is
+    const afbeeldingen = afbeeldingenSets[tijd]; // Zoek de juiste lijst van foto's
+    const randomIndex = Math.floor(Math.random() * afbeeldingen.length); // Kies een willekeurige foto uit de lijst
+    document.body.style.backgroundImage = `url(${afbeeldingen[randomIndex]})`; // Verander de achtergrond
 }
 
 // Event listeners toevoegen bij het laden van de pagina
 document.addEventListener("DOMContentLoaded", function () {
-    // Voeg event listeners toe aan de knoppen
     document.getElementById("ochtendKnop").addEventListener("click", function () {
         veranderAchtergrond("ochtend");
     });
@@ -24,46 +27,45 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-    function updateTijd() {
-        const tijdElement = document.getElementById("live-tijd");
-        const tijd = new Date().toLocaleTimeString(); // Haalt de huidige tijd op
-        tijdElement.textContent = `De huidige tijd is: ${tijd}`; // Update de tijd in html
-    }
-    
-    // Zorg dat de tijd elke seconde wordt bijgewerkt
-    setInterval(updateTijd, 1000);
-    
-    // Start direct een eerste update
-    updateTijd();
-    
+// Tijd bijwerken
+function updateTijd() {
+    const tijdElement = document.getElementById("live-tijd"); // Zoek het tijdvak op de pagina
+    const tijd = new Date().toLocaleTimeString(); // Vraag de computer om de huidige tijd
+    tijdElement.textContent = `De huidige tijd is: ${tijd}`; // Zet die tijd op de pagina
+}
 
-// Audio bronnen per tijd
+setInterval(updateTijd, 1000); // 1 seconde
+updateTijd(); // Zorgt dat de tijd meteen wordt ingesteld als de pagina start
+
+// Audio bronnen
 const audioBronnen = {
     ochtend: 'https://www.bensound.com/bensound-music/bensound-sunny.mp3',
     middag: 'https://www.bensound.com/bensound-music/bensound-energy.mp3',
-    avond: 'https://www.bensound.com/bensound-music/bensound-creativeminds.mp3'    
+    avond: 'https://www.bensound.com/bensound-music/bensound-creativeminds.mp3'
 };
 
-// Variabele om de huidige audio bij te houden
 let huidigeAudio = new Audio();
 
-// Functie om audio te veranderen
 function veranderAudio(tijd) {
-    // Pauzeert audio
     huidigeAudio.pause();
-    huidigeAudio.currentTime = 0;
-
-    // Update de audio bron
-    huidigeAudio = new Audio(audioBronnen[tijd]);
+    huidigeAudio.currentTime = 0; // Begint opnieuw
+    huidigeAudio.src = audioBronnen[tijd]; // Zet het nieuwe geluid klaar
+    huidigeAudio.load(); // Laad het geluid klaar om af te spelen
 }
 
-// Play knop functionaliteit
+// Audioknop functionaliteit
 document.getElementById('play-button').addEventListener('click', () => {
-    huidigeAudio.play();
+    if (!actieveTijd) {
+        alert('Selecteer eerst een tijd om de audio af te spelen.'); // Waarschuwing als je geen tijd hebt gekozen
+        return;
+    }
+    veranderAudio(actieveTijd); // Zet het juiste geluid klaar
+    huidigeAudio.play().catch(err => {
+        console.error('Kan audio niet afspelen:', err); // Laat fouten zien als het niet lukt
+    });
 });
 
-// Pause knop functionaliteit
 document.getElementById('pause-button').addEventListener('click', () => {
-    huidigeAudio.pause();
+    huidigeAudio.pause(); // Pauzeer de audio
 });
 
