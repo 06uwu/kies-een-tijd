@@ -39,10 +39,10 @@ updateTijd(); // Zorgt dat de tijd meteen wordt ingesteld als de pagina start
 
 // Audio bronnen
 const audioBronnen = {
-    ochtend: 'https://www.bensound.com/bensound-music/bensound-sunny.mp3',
-    middag: 'https://www.bensound.com/bensound-music/bensound-energy.mp3',
-    avond: 'https://www.bensound.com/bensound-music/bensound-creativeminds.mp3'
-};
+        ochtend: 'audio/ochtend.mp3',
+        middag: 'audio/middag.mp3',
+        avond: 'audio/avond.mp3'
+    };
 
 let huidigeAudio = new Audio();
 
