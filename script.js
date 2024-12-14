@@ -39,33 +39,32 @@ updateTijd(); // Zorgt dat de tijd meteen wordt ingesteld als de pagina start
 
 // Audio bronnen
 const audioBronnen = {
-        ochtend: 'audio/ochtend.mp3',
-        middag: 'audio/middag.mp3',
-        avond: 'audio/avond.mp3'
-    };
+    ochtend: 'audio/ochtend.mp3',
+    middag: 'audio/middag.mp3',
+    avond: 'audio/avond.mp3'
+};
 
 let huidigeAudio = new Audio();
 
 function veranderAudio(tijd) {
+    if (!tijd) {
+        alert('Selecteer eerst een tijd om de audio af te spelen.');
+        return;
+    }
     huidigeAudio.pause();
-    huidigeAudio.currentTime = 0; // Begint opnieuw
-    huidigeAudio.src = audioBronnen[tijd]; // Zet het nieuwe geluid klaar
-    huidigeAudio.load(); // Laad het geluid klaar om af te spelen
+    huidigeAudio.currentTime = 0;
+    huidigeAudio.src = audioBronnen[tijd];
+    huidigeAudio.play().catch(err => {
+        console.error('Kan audio niet afspelen:', err);
+    });
 }
 
 // Audioknop functionaliteit
 document.getElementById('play-button').addEventListener('click', () => {
-    if (!actieveTijd) {
-        alert('Selecteer eerst een tijd om de audio af te spelen.'); // Waarschuwing als je geen tijd hebt gekozen
-        return;
-    }
-    veranderAudio(actieveTijd); // Zet het juiste geluid klaar
-    huidigeAudio.play().catch(err => {
-        console.error('Kan audio niet afspelen:', err); // Laat fouten zien als het niet lukt
-    });
+    veranderAudio(actieveTijd); // Alles gebeurt nu in deze functie
 });
 
 document.getElementById('pause-button').addEventListener('click', () => {
-    huidigeAudio.pause(); // Pauzeer de audio
+    huidigeAudio.pause();
 });
 
