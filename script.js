@@ -47,21 +47,21 @@ const audioBronnen = {
 let huidigeAudio = new Audio();
 
 function veranderAudio(tijd) {
-    if (!tijd) {
-        alert('Selecteer eerst een tijd om de audio af te spelen.');
+    if (!tijd) { // Als er geen tijd is gekozen...
+        alert('Selecteer eerst een tijd om de audio af te spelen.'); // Laat een waarschuwing zien
         return;
     }
-    huidigeAudio.pause();
-    huidigeAudio.currentTime = 0;
-    huidigeAudio.src = audioBronnen[tijd];
-    huidigeAudio.play().catch(err => {
-        console.error('Kan audio niet afspelen:', err);
+    huidigeAudio.pause(); // Stop het geluid dat al speelt
+    huidigeAudio.currentTime = 0; // Begin opnieuw bij het begin van de muziek
+    huidigeAudio.src = audioBronnen[tijd]; // Zet het nieuwe geluid klaar
+    huidigeAudio.play().catch(err => { // Probeer het geluid af te spelen
+        console.error('Kan audio niet afspelen:', err); // Als het niet lukt, laat een fout zien
     });
 }
 
 // Audioknop functionaliteit
 document.getElementById('play-button').addEventListener('click', () => {
-    veranderAudio(actieveTijd); // Alles gebeurt nu in deze functie
+    veranderAudio(actieveTijd); 
 });
 
 document.getElementById('pause-button').addEventListener('click', () => {
