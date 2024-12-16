@@ -1,16 +1,24 @@
-// Variabele voor actieve tijd
 let actieveTijd = null; // Herinnert welke tijd geselecteerd is
-
-const afbeeldingenSets = {
-    ochtend: ["images/ochtend.png", "images/ochtend1.jpg", "images/ochtend2.jpg"],
-    middag: ["images/middag.png", "images/middag1.jpg", "images/middag2.jpeg"],
-    avond: ["images/avond.png", "images/avond1.png", "images/avond2.jpg"]
-};
 
 function veranderAchtergrond(tijd) {
     actieveTijd = tijd; // Onthoud welke tijd actief is
-    const afbeeldingen = afbeeldingenSets[tijd]; // Zoek de juiste lijst van foto's
-    const randomIndex = Math.floor(Math.random() * afbeeldingen.length); // Kies een willekeurige foto uit de lijst
+
+    let afbeeldingen; // Variabele voor de juiste set afbeeldingen
+
+    // Kies de juiste afbeeldingenlijst op basis van de tijd
+    if (tijd === "ochtend") {
+        afbeeldingen = ["images/ochtend.png", "images/ochtend1.jpg", "images/ochtend2.jpg"];
+    } else if (tijd === "middag") {
+        afbeeldingen = ["images/middag.png", "images/middag1.jpg", "images/middag2.jpeg"];
+    } else if (tijd === "avond") {
+        afbeeldingen = ["images/avond.png", "images/avond1.png", "images/avond2.jpg"];
+    } else {
+        console.error("Onbekende tijd: " + tijd); // Voor het geval dat de tijd niet klopt
+        return;
+    }
+
+    // Kies een willekeurige foto uit de lijst
+    const randomIndex = Math.floor(Math.random() * afbeeldingen.length);
     document.body.style.backgroundImage = `url(${afbeeldingen[randomIndex]})`; // Verander de achtergrond
 }
 
